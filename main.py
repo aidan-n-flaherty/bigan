@@ -4,7 +4,41 @@ import torch
 import torchvision
 import torchvision.transforms as transforms
 from model import BiGAN
+import pandas as pd
+from torchvision.io import read_image
+import os
 
+class CustomImageDataset(Dataset):
+    def __init__(self, train, transform=None):
+		directory = "./datasets"
+		
+		imsize = 256
+		self.images = []
+		for file in os.listdir(directory):
+			image = Image.open(directory + "/" + image_name).resize((imsize, imsize)).convert('RGBA')
+		    data = image.getdata()
+
+		    newData = []
+		    for item in data:
+		        if item[3] == 0:
+		            newData.append((255, 255, 255))
+		        else:
+		            newData.append(item[:3])
+
+		    image = image.convert('RGB')
+		    image.putdata(newData)
+			self.images.append(image)
+		
+        self.transform = transform
+
+    def __len__(self):
+        return len(self.images)
+
+    def __getitem__(self, idx):
+        image = self.images[idx]
+        if self.transform:
+            image = self.transform(image)
+        return image, 0
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -37,8 +71,8 @@ def main():
     config = parse_args()
     transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize([0.5,], [0.5,])])
     # MNIST dataset 
-    train_dataset = torchvision.datasets.MNIST(root='./data', train=True, transform=transform,download=True)
-    test_dataset = torchvision.datasets.MNIST(root='./data',train=False,transform=transform)
+    train_dataset = CustomImageDataset(train=True, transform=transform)
+    test_dataset = CustomImageDataset(train=False, transform=transform)
 
     # Data loader
     train_loader = torch.utils.data.DataLoader(dataset=train_dataset, batch_size=config.batch_size, shuffle=True)
