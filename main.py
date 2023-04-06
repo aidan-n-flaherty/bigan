@@ -8,6 +8,7 @@ import pandas as pd
 from torchvision.io import read_image
 from torch.utils.data import Dataset
 from torchvision import datasets
+from PIL import Image
 import os
 
 class CustomImageDataset(Dataset):
