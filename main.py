@@ -6,6 +6,8 @@ import torchvision.transforms as transforms
 from model import BiGAN
 import pandas as pd
 from torchvision.io import read_image
+from torch.utils.data import Dataset
+from torchvision import datasets
 import os
 
 class CustomImageDataset(Dataset):
