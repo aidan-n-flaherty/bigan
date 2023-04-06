@@ -18,7 +18,7 @@ class CustomImageDataset(Dataset):
         imsize = 256
         self.images = []
         for file in os.listdir(directory):
-            image = Image.open(directory + "/" + image_name).resize((imsize, imsize)).convert('RGBA')
+            image = Image.open(directory + "/" + file).resize((imsize, imsize)).convert('RGBA')
             data = image.getdata()
 
             newData = []
