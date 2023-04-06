@@ -10,25 +10,25 @@ import os
 
 class CustomImageDataset(Dataset):
     def __init__(self, train, transform=None):
-		directory = "./datasets"
-		
-		imsize = 256
-		self.images = []
-		for file in os.listdir(directory):
-			image = Image.open(directory + "/" + image_name).resize((imsize, imsize)).convert('RGBA')
-			data = image.getdata()
+        directory = "./datasets"
+        
+        imsize = 256
+        self.images = []
+        for file in os.listdir(directory):
+            image = Image.open(directory + "/" + image_name).resize((imsize, imsize)).convert('RGBA')
+            data = image.getdata()
 
-			newData = []
-			for item in data:
-				if item[3] == 0:
-					newData.append((255, 255, 255))
-				else:
-					newData.append(item[:3])
+            newData = []
+            for item in data:
+                if item[3] == 0:
+                    newData.append((255, 255, 255))
+                else:
+                    newData.append(item[:3])
 
-			image = image.convert('RGB')
-			image.putdata(newData)
-			self.images.append(image)
-		self.transform = transform
+            image = image.convert('RGB')
+            image.putdata(newData)
+            self.images.append(image)
+        self.transform = transform
 
     def __len__(self):
         return len(self.images)
@@ -37,7 +37,7 @@ class CustomImageDataset(Dataset):
         image = self.images[idx]
         if self.transform:
             image = self.transform(image)
-			return image, 0
+            return image, 0
 
 def parse_args():
     parser = argparse.ArgumentParser()
